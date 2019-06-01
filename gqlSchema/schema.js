@@ -3,7 +3,8 @@ const {
   GraphQLSchema,
   GraphQLString,
   GraphQLInt,
-  GraphQLList
+  GraphQLList,
+  GraphQLNonNull
 } = require('graphql');
 const axios = require('axios');
 
@@ -44,7 +45,7 @@ const UserType = new GraphQLObjectType({
   })
 });
 
-const RootQueryType = new GraphQLObjectType({
+const RootQuery = new GraphQLObjectType({
   name: 'RootQuery',
   fields: {
     user: {
@@ -72,6 +73,63 @@ const RootQueryType = new GraphQLObjectType({
   }
 });
 
+const Mutation = new GraphQLObjectType({
+  name: 'Mutation',
+  fields: {
+    addUser: {
+      type: UserType,
+      args: {
+        name: { type: new GraphQLNonNull(GraphQLString) },
+        age: { type: GraphQLInt },
+        companyId: { type: GraphQLString }
+      },
+      resolve(parentValue, { name, age, companyId }) {
+        return axios({
+          url: 'http://localhost:3000/users',
+          method: 'post',
+          headers: { 'Content-Type': 'application/json' },
+          data: { name, age, companyId }
+        })
+          .then(({ data }) => data)
+          .catch(({ message }) => new Error(message));
+      }
+    },
+    deleteUser: {
+      type: UserType,
+      args: { id: { type: new GraphQLNonNull(GraphQLString) } },
+      resolve(parentValue, { id }) {
+        return axios({
+          url: `http://localhost:3000/users/${id}`,
+          method: 'delete',
+          headers: { 'Content-Type': 'application/json' }
+        })
+          .then(({ data }) => data)
+          .catch(({ message }) => new Error(message));
+      }
+    },
+    editUser: {
+      type: UserType,
+      args: {
+        id: { type: new GraphQLNonNull(GraphQLString) },
+        name: { type: GraphQLString },
+        age: { type: GraphQLString },
+        companyId: { type: GraphQLString }
+      },
+      resolve(parentValue, { id, name, age, companyId }) {
+        return axios({
+          url: `http://localhost:3000/users/${id}`,
+          method: 'patch',
+          headers: { 'Content-Type': 'application/json' },
+          data: { name, age, companyId }
+        })
+          .then(({ data }) => data)
+          .catch(({ message }) => new Error(message));
+      }
+    }
+  }
+});
+
 module.exports = new GraphQLSchema({
-  query: RootQueryType
+  query: RootQuery,
+  mutation: Mutation
 });

@@ -1,7 +1,7 @@
 //## SectionOne (on the graphQL)
 
 `
-query nameOfQuery {
+query/mutation nameOfQuery {
 
   key1: type1(id: "1"){
     ...fields
@@ -36,7 +36,8 @@ const {
   GraphQLString,
   GraphQLInt,
   GraphQLSchema,
-  GraphQLList
+  GraphQLList,
+  GraphQLNonNull
 } = require('graphql');
 
 const CompanyType = new GraphQLObjectType({
@@ -135,3 +136,35 @@ axios({
 }).then(({ data, status, headers, config, request }) =>
   console.log(data, status, headers, config, request)
 );
+
+// 5. Mutation
+
+// put will override whole fields of data
+// patch will override fields that provided in body of request
+
+const Mutation = new GraphQLObjectType({
+  name: 'Mutation',
+  fields: {
+    editUser: {
+      type: UserType,
+      args: {
+        id: { type: new GraphQLNonNull(GraphQLString) },
+        name: { type: GraphQLString },
+        age: { type: GraphQLString },
+        companyId: { type: GraphQLString }
+      },
+      resolve(parentValue, { id, name, age, companyId }) {
+        return axios({
+          url: `http://localhost:3000/users/${id}`,
+          method: 'patch',
+          headers: { 'Content-Type': 'application/json' },
+          data: { name, age, companyId }
+        })
+          .then(({ data }) => data)
+          .catch(({ message }) => new Error(message));
+      }
+    }
+  }
+});
+
+module.exports = new GraphQLSchema({ mutation: Mutation });
