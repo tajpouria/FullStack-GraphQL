@@ -1,0 +1,2 @@
+require('./lyric');
+require('./song');

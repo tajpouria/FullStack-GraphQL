@@ -1,0 +1,8 @@
+{
+  "name": "Lyrical webApp-development",
+  "database": {
+    "mongodb": {
+      "uri": "mongodb://localhost/lyrical"
+    }
+  }
+}
