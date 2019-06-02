@@ -168,3 +168,8 @@ const Mutation = new GraphQLObjectType({
 });
 
 module.exports = new GraphQLSchema({ mutation: Mutation });
+
+// ## SectionTwo (GraphQL FrontEnd)
+
+// 1. minimalist react setup
+// [![Edit brave-dream-3qmfl](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/brave-dream-3qmfl?fontsize=14)
