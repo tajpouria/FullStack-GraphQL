@@ -3,15 +3,15 @@ const winston = require('winston');
 const mongoose = require('mongoose');
 const config = require('config');
 const bodyParser = require('body-parser');
-const expressGraphQl = require('express-graphql')
+const expressGraphQl = require('express-graphql');
 
-const schema = require('./gqlSchema/schema')
+const schema = require('./gqlschema/schema');
 
 winston.add(winston.transports.File, { filename: 'logfile.log' });
 // db config
 mongoose.Promise = global.Promise;
 const db = config.get('database.mongodb.uri');
-mongoose.connect(db, err => {
+mongoose.connect(db, (err) => {
   if (err) {
     winston.error(err.message, err);
     return process.exit(1);
@@ -19,20 +19,23 @@ mongoose.connect(db, err => {
   return winston.info(`Successfully connected to ${db}`);
 });
 // handling uncaughtException & unhandledRejections
-process.on('uncaughtException', ex => {
+process.on('uncaughtException', (ex) => {
   winston.error(ex.message, ex);
   return process.exit(1);
 });
-process.on('unhandledRejection', err => {
+process.on('unhandledRejection', (err) => {
   winston.err(err.message, err);
   return process.exit(1);
 });
 // middleWares
 app.use(bodyParser.json());
-app.use('/gql',expressGraphQl({
-  schema
-  graphiql:true
-}))
+app.use(
+  '/gql',
+  expressGraphQl({
+    schema,
+    graphiql: true,
+  }),
+);
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => winston.info(`Listening on port ${port}`));
