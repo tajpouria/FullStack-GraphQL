@@ -1,4 +1,4 @@
-//## SectionOne (on the graphQL)
+// ## SectionOne (on the graphQL)
 
 `
 query/mutation nameOfQuery {
@@ -25,7 +25,6 @@ fragment fields on Type {
 // yarn add express express-graphql graphql
 // ./server.js
 const expressGraphQL = require('express-graphql');
-const schema = require('./schema/schema');
 
 app.use('/graphql', expressGraphQL({ schema, graphiql: true }));
 
@@ -37,7 +36,7 @@ const {
   GraphQLInt,
   GraphQLSchema,
   GraphQLList,
-  GraphQLNonNull
+  GraphQLNonNull,
 } = require('graphql');
 
 const CompanyType = new GraphQLObjectType({
@@ -47,12 +46,10 @@ const CompanyType = new GraphQLObjectType({
     users: {
       type: new GraphQLList(UserType),
       resolve(parentValue, args) {
-        return axios
-          .get(`url/${parentValue.companyId}`)
-          .then(({ data }) => data);
-      }
-    }
-  })
+        return axios.get(`url/${parentValue.companyId}`).then(({ data }) => data);
+      },
+    },
+  }),
 });
 
 const UserType = new GraphQLObjectType({
@@ -64,12 +61,10 @@ const UserType = new GraphQLObjectType({
     company: {
       type: CompanyType,
       resolve(parentValue, args) {
-        return axios
-          .get(`url/${parentValue.companyId}`)
-          .then(({ data }) => data);
-      }
-    }
-  })
+        return axios.get(`url/${parentValue.companyId}`).then(({ data }) => data);
+      },
+    },
+  }),
 });
 
 const RootQuery = new GraphQLObjectType({
@@ -78,13 +73,13 @@ const RootQuery = new GraphQLObjectType({
     user: {
       type: UserType,
       args: { id: { type: GraphQLString } },
-      resolve(parentValue, args) {}
-    }
-  }
+      resolve(parentValue, args) {},
+    },
+  },
 });
 
 module.exports = new GraphQLSchema({
-  query: RootQuery
+  query: RootQuery,
 });
 
 // 2. json-server
@@ -99,25 +94,26 @@ fetch('http//', {
   cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
   credentials: 'same-origin', // include, *same-origin, omit
   headers: {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
     // 'Content-Type': 'application/x-www-form-urlencoded',
   },
   redirect: 'follow', // manual, *follow, error
   referrer: 'no-referrer', // no-referrer, *client
-  body: JSON.stringify(data) // body data type must match "Content-Type" header
+  body: JSON.stringify(data), // body data type must match "Content-Type" header
 })
   .then(response => response.json()) // parses JSON response into native Javascript objects
   .catch(({ message }) => new Error(message));
 
 // 4. axios
 const axios = require('axios');
+const schema = require('./schema/schema');
 
 axios({
   url: '/user',
   method: 'get',
   headers: { 'X-Requested-With': 'XMLHttpRequest' },
   data: {
-    firstName: 'Fred'
+    firstName: 'Fred',
   },
   timeout: 1000, // default is `0` (no timeout)
   withCredentials: false, // default
@@ -130,12 +126,12 @@ axios({
     port: 9000,
     auth: {
       username: 'mikeymike',
-      password: 'rapunz3l'
-    }
-  }
-}).then(({ data, status, headers, config, request }) =>
-  console.log(data, status, headers, config, request)
-);
+      password: 'rapunz3l',
+    },
+  },
+}).then(({
+  data, status, headers, config, request,
+}) => console.log(data, status, headers, config, request));
 
 // 5. Mutation
 
@@ -151,25 +147,65 @@ const Mutation = new GraphQLObjectType({
         id: { type: new GraphQLNonNull(GraphQLString) },
         name: { type: GraphQLString },
         age: { type: GraphQLString },
-        companyId: { type: GraphQLString }
+        companyId: { type: GraphQLString },
       },
-      resolve(parentValue, { id, name, age, companyId }) {
+      resolve(parentValue, {
+        id, name, age, companyId,
+      }) {
         return axios({
           url: `http://localhost:3000/users/${id}`,
           method: 'patch',
           headers: { 'Content-Type': 'application/json' },
-          data: { name, age, companyId }
+          data: { name, age, companyId },
         })
           .then(({ data }) => data)
           .catch(({ message }) => new Error(message));
-      }
-    }
-  }
+      },
+    },
+  },
 });
 
 module.exports = new GraphQLSchema({ mutation: Mutation });
 
-// ## SectionTwo (GraphQL FrontEnd)
+// ## SectionTwo (Apollo Client On FrontEnd)
 
 // 1. minimalist react setup
 // [![Edit brave-dream-3qmfl](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/brave-dream-3qmfl?fontsize=14)
+
+// 2. ApolloClient & ApolloProvider
+// >yarn add apollo-client react-apollo
+
+// import ApolloClient from 'apollo-boost'
+// import {  ApolloProvider } from 'react-apollo'
+
+const client = new ApolloClient({
+  uri: 'http://localhost:4000/graphql',
+});
+
+function App() {
+  return (
+    <ApolloProvider client={client}>
+      <div />
+    </ApolloProvider>
+  );
+}
+
+// 3. gql & graphql
+// yarn add graphql-tag
+
+// import gql from 'apollo-boost'
+// import { graphql } from 'react-apollo'
+
+function Component(props) {
+  return <div>{props.data.songs}</div>;
+}
+
+const query = gql`
+  {
+    songs {
+      title
+    }
+  }
+`;
+
+export default graphql(query)(Component);

@@ -30,7 +30,7 @@ process.on('unhandledRejection', (err) => {
 // middleWares
 app.use(bodyParser.json());
 app.use(
-  '/gql',
+  '/graphql',
   expressGraphQl({
     schema,
     graphiql: true,

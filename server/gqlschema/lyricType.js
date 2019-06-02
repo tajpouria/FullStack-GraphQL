@@ -2,8 +2,6 @@ const {
   GraphQLObjectType, GraphQLID, GraphQLInt, GraphQLString,
 } = require('graphql');
 
-const SongType = require('./songType');
-
 const Lyric = require('../models/lyric');
 
 module.exports = new GraphQLObjectType({

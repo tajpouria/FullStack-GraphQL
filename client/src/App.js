@@ -1,7 +1,20 @@
-import React, { Component } from 'react';
+import React from 'react';
+import ApolloClient from 'apollo-boost';
+import { ApolloProvider } from 'react-apollo';
 
-export default class App extends Component {
-  render() {
-    return <div> changing </div>;
-  }
+import SongList from './components/SongList';
+
+const client = new ApolloClient({
+  uri: 'http://localhost:4000/graphql',
+  fetchOptions: {
+    mode: 'no-cors',
+  },
+});
+
+export default function () {
+  return (
+    <ApolloProvider client={client}>
+      <SongList />
+    </ApolloProvider>
+  );
 }

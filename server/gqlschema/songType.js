@@ -3,7 +3,6 @@ const {
 } = require('graphql');
 
 const Song = require('../models/song');
-const LyricType = require('./lyricType');
 
 module.exports = new GraphQLObjectType({
   name: 'SongType',
@@ -13,7 +12,7 @@ module.exports = new GraphQLObjectType({
       type: GraphQLString,
     },
     lyrics: {
-      type: new GraphQLList(LyricType),
+      type: new GraphQLList(require('./lyricType')),
       resolve({ id }) {
         return Song.findLyrics(id);
       },

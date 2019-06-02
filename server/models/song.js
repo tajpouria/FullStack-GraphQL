@@ -31,9 +31,9 @@ songSchema.statics.addLyric = function (id, content) {
 };
 
 songSchema.statics.findLyrics = function (id) {
-  this.findById(id)
+  return this.findById(id)
     .populate('lyrics')
-    .then(song => song.lyrics)
+    .then(({ lyrics }) => lyrics)
     .catch(({ message }) => new Error(message));
 };
 
