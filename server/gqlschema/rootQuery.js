@@ -1,14 +1,13 @@
-const mongoose = require('mongoose');
 const { GraphQLObjectType, GraphQLNonNull, GraphQLID } = require('graphql');
 
 const LyricType = require('./lyricType');
 const SongType = require('./songType');
 
-const Lyric = mongoose.model('Lyric');
-const Song = mongoose.model('Song');
+const Lyric = require('../models/lyric');
+const Song = require('../models/song');
 
 module.exports = new GraphQLObjectType({
-  name: 'RootQuery',
+  name: 'RootQueryType',
   fields: () => ({
     song: {
       type: SongType,

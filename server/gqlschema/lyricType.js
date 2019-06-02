@@ -1,19 +1,19 @@
-const mongoose = require('mongoose');
 const {
   GraphQLObjectType, GraphQLID, GraphQLInt, GraphQLString,
 } = require('graphql');
 
-const Lyric = mongoose.model('Song');
-const songType = require('./songType');
+const SongType = require('./songType');
+
+const Lyric = require('../models/lyric');
 
 module.exports = new GraphQLObjectType({
-  name: 'Lyric',
+  name: 'LyricType',
   fields: () => ({
     id: { type: GraphQLID },
     likes: { type: GraphQLInt },
     content: { type: GraphQLString },
     song: {
-      type: songType,
+      type: require('./songType'),
       resolve({ id }) {
         return Lyric.findById(id)
           .populate('song')

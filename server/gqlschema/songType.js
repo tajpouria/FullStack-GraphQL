@@ -1,13 +1,12 @@
-const mongoose = require('mongoose');
 const {
   GraphQLObjectType, GraphQLID, GraphQLString, GraphQLList,
 } = require('graphql');
 
-const Lyric = mongoose.model('Lyric');
+const Song = require('../models/song');
 const LyricType = require('./lyricType');
 
 module.exports = new GraphQLObjectType({
-  name: 'Song',
+  name: 'SongType',
   fields: () => ({
     id: { type: GraphQLID },
     title: {
@@ -16,7 +15,7 @@ module.exports = new GraphQLObjectType({
     lyrics: {
       type: new GraphQLList(LyricType),
       resolve({ id }) {
-        return Lyric.findLyrics(id);
+        return Song.findLyrics(id);
       },
     },
   }),

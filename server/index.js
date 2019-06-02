@@ -11,7 +11,7 @@ winston.add(winston.transports.File, { filename: 'logfile.log' });
 // db config
 mongoose.Promise = global.Promise;
 const db = config.get('database.mongodb.uri');
-mongoose.connect(db, (err) => {
+mongoose.connect(db, { useNewUrlParser: true }, (err) => {
   if (err) {
     winston.error(err.message, err);
     return process.exit(1);

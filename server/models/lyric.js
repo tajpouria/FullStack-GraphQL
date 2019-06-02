@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const {
-  Type: { ObjectId },
+  Types: { ObjectId },
 } = mongoose.Schema;
 
 const lyricSchema = new mongoose.Schema({
@@ -10,7 +10,7 @@ const lyricSchema = new mongoose.Schema({
   content: { type: String },
 });
 
-lyricSchema.static.likes = function (id) {
+lyricSchema.statics.likes = function (id) {
   return this.findById(id)
     .then((lyric) => {
       lyric.likes += 1;
@@ -19,4 +19,4 @@ lyricSchema.static.likes = function (id) {
     .catch(({ message }) => new Error(message));
 };
 
-mongoose.model('Lyric', lyricSchema);
+module.exports = mongoose.model('Lyric', lyricSchema);
