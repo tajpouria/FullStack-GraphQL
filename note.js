@@ -1,5 +1,4 @@
 // ## SectionOne (on the graphQL)
-
 `
 query/mutation nameOfQuery {
 
@@ -171,6 +170,24 @@ module.exports = new GraphQLSchema({ mutation: Mutation });
 
 // 1. minimalist react setup
 // [![Edit brave-dream-3qmfl](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/brave-dream-3qmfl?fontsize=14)
+
+// prop-types
+// > yarn add prop-types
+// import PropTypes from 'prop-types';
+
+Component.propTypes = {
+  aString: PropTypes.string.isRequired,
+  aNumber: PropTypes.number.isRequired,
+  aBoolean: PropTypes.bool.isRequired,
+  anArray: PropTypes.array.isRequired,
+  anObject: PropTypes.object.isRequired,
+  anArrayOf: PropTypes.arrayOf(
+    PropTypes.shape({
+      aString: PropTypes.string,
+      aNumber: PropTypes.number.isRequired,
+    }),
+  ),
+};
 
 // 2. ApolloClient & ApolloProvider
 // >yarn add apollo-client react-apollo

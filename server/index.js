@@ -28,7 +28,7 @@ process.on('unhandledRejection', (err) => {
   return process.exit(1);
 });
 // middleWares
-app.use(cors()); // *** GraphQL NO CORS ERROR
+app.use(cors()); // *** GraphQL NO CORS ERROR solved
 app.use(bodyParser.json());
 app.use(
   '/graphql',
