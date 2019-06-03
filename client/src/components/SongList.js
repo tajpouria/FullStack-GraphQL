@@ -2,6 +2,7 @@ import React from 'react';
 import { gql } from 'apollo-boost';
 import { graphql } from 'react-apollo';
 import PropTypes from 'prop-types';
+import { NavLink } from 'react-router-dom';
 
 function SongList({ data }) {
   const renderSongs = songs => songs.map(({ id, title }) => (
@@ -10,8 +11,16 @@ function SongList({ data }) {
     </li>
   ));
 
-  if (data.loading) return <div>Loading...</div>;
-  return <ul className="collection">{renderSongs(data.songs)}</ul>;
+  return (
+    <div className="container">
+      <NavLink to="/song/new">Create New Song</NavLink>
+      {data.loading ? (
+        <h4>loading...</h4>
+      ) : (
+        <ul className="collection">{renderSongs(data.songs)}</ul>
+      )}
+    </div>
+  );
 }
 
 const query = gql`
