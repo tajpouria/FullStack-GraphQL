@@ -229,3 +229,28 @@ const query = gql`
 `;
 
 export default graphql(query)(Component);
+
+// 4. graphQL mutation queryFunction variables
+
+function Component(props) {
+  return <div>{props.data.mutate({
+    variables : {
+      title : 'SomeTitle'
+    }
+  }) }</div>;
+}
+
+// func
+const mutation = gql`
+  mutation AddSong($title: String!) {
+    addSong(title: $title) {
+      title
+    }
+  }
+`;
+// variable
+// `{
+//   "title": "SomeTitle"
+// }`;
+
+export default graphql(mutation)(Component )

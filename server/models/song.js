@@ -7,7 +7,7 @@ const {
 } = mongoose.Schema;
 
 const songSchema = new mongoose.Schema({
-  title: { type: String },
+  title: { type: String, required: true },
   user: {
     type: ObjectId,
     ref: 'User',

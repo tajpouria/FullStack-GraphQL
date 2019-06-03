@@ -16,7 +16,7 @@ export default function () {
       <Router>
         <Switch>
           <Route exact path="/" component={SongList} />
-          <Route path="/song/new" component={CreateSong} />
+          <Route path="/songs/new" component={CreateSong} />
         </Switch>
       </Router>
     </ApolloProvider>
