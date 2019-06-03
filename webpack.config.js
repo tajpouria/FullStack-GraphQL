@@ -5,7 +5,10 @@ module.exports = {
   entry: './client/src/index.js',
   output: {
     path: path.join(__dirname, '/dist'),
-    filename: 'index_bundle.js'
+    filename: 'index_bundle.js',
+  },
+  devServer: {
+    port: 3000,
   },
   module: {
     rules: [
@@ -13,14 +16,14 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
-          loader: 'babel-loader'
-        }
-      }
-    ]
+          loader: 'babel-loader',
+        },
+      },
+    ],
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './client/public/index.html'
-    })
-  ]
+      template: './client/public/index.html',
+    }),
+  ],
 };

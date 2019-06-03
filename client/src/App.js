@@ -6,9 +6,6 @@ import SongList from './components/SongList';
 
 const client = new ApolloClient({
   uri: 'http://localhost:4000/graphql',
-  fetchOptions: {
-    mode: 'no-cors',
-  },
 });
 
 export default function () {

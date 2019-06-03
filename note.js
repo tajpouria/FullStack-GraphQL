@@ -182,6 +182,9 @@ const client = new ApolloClient({
   uri: 'http://localhost:4000/graphql',
 });
 
+// *** ./server/index.js
+// *** app.use(cors())
+
 function App() {
   return (
     <ApolloProvider client={client}>

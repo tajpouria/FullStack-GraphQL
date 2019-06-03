@@ -1,4 +1,6 @@
-const { GraphQLObjectType, GraphQLID, GraphQLList } = require('graphql');
+const {
+  GraphQLObjectType, GraphQLID, GraphQLList, GraphQLNonNull,
+} = require('graphql');
 
 const LyricType = require('./lyricType');
 const SongType = require('./songType');
@@ -16,9 +18,17 @@ module.exports = new GraphQLObjectType({
       },
     },
 
-    lyrics: {
+    song: {
+      type: SongType,
+      args: { id: { type: new GraphQLNonNull(GraphQLID) } },
+      resolve(parentValue, { id }) {
+        return Song.findById(id);
+      },
+    },
+
+    lyric: {
       type: LyricType,
-      args: { id: { type: GraphQLID } },
+      args: { id: { type: new GraphQLNonNull(GraphQLID) } },
       resolve(parentValue, { id }) {
         return Lyric.findById(id)
           .then(lyric => lyric)

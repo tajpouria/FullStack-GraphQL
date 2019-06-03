@@ -1,10 +1,10 @@
+const cors = require('cors');
 const app = require('express')();
 const winston = require('winston');
 const mongoose = require('mongoose');
 const config = require('config');
 const bodyParser = require('body-parser');
 const expressGraphQl = require('express-graphql');
-
 const schema = require('./gqlschema/schema');
 
 winston.add(winston.transports.File, { filename: 'logfile.log' });
@@ -28,6 +28,7 @@ process.on('unhandledRejection', (err) => {
   return process.exit(1);
 });
 // middleWares
+app.use(cors()); // *** GraphQL NO CORS ERROR
 app.use(bodyParser.json());
 app.use(
   '/graphql',
