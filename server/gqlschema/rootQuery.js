@@ -25,15 +25,5 @@ module.exports = new GraphQLObjectType({
         return Song.findById(id);
       },
     },
-
-    songLyrics: {
-      type: LyricType,
-      args: { id: { type: new GraphQLNonNull(GraphQLID) } },
-      resolve(parentValue, { id }) {
-        return Lyric.findById(id)
-          .then(lyric => lyric)
-          .catch(({ message }) => new Error(message));
-      },
-    },
   }),
 });

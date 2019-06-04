@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 
 import { findSongByIdQuery, addLyricToSongQuery } from '../queries';
+import LyricsList from './LyricsList';
 
 function SongDetails({ data, mutate, match: { params } }) {
   const { loading, song } = data;
@@ -13,7 +14,9 @@ function SongDetails({ data, mutate, match: { params } }) {
   function handleFormSubmit(event) {
     event.preventDefault();
 
-    mutate({ variables: { songId: params.id, content } }).then(() => setContent(''));
+    mutate({ variables: { songId: params.id, content } })
+      .then(() => setContent(''))
+      .then(() => data.refetch());
   }
 
   return (
@@ -26,12 +29,15 @@ function SongDetails({ data, mutate, match: { params } }) {
           <input value={content} onChange={({ target: { value } }) => setContent(value)} />
         </label>
       </form>
+      <LyricsList song={data.song} />
     </div>
   );
 }
 
 SongDetails.propTypes = {
   data: PropTypes.object.isRequired,
+  mutate: PropTypes.func.isRequired,
+  match: PropTypes.object.isRequired,
 };
 
 export default compose(

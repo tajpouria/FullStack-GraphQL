@@ -30,6 +30,10 @@ const findSongByIdQuery = gql`
     song(id: $id) {
       id
       title
+      lyrics {
+        id
+        content
+      }
     }
   }
 `;
