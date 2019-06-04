@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { gql } from 'apollo-boost';
 import { graphql } from 'react-apollo';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
+
+import { songsQuery } from '../queries';
+import DeleteButton from './DeleteButton';
 
 function SongList({ data }) {
   const [songs, setSongs] = useState([]);
@@ -14,6 +16,7 @@ function SongList({ data }) {
   const renderSongs = () => songs.map(({ id, title }) => (
     <li className="collection-item" key={id}>
       {title}
+      <DeleteButton id={id} />
     </li>
   ));
 
@@ -24,24 +27,15 @@ function SongList({ data }) {
       ) : (
         <ul className="collection">{renderSongs()}</ul>
       )}
-      <NavLink className="btn-floating btn-large red right" to="/songs/new">
+      <NavLink className="btn-floating btn-large green right" to="/songs/new">
         <i className="material-icon">add</i>
       </NavLink>
     </div>
   );
 }
 
-const query = gql`
-  {
-    songs {
-      id
-      title
-    }
-  }
-`;
-
 SongList.propTypes = {
   data: PropTypes.object.isRequired,
 };
 
-export default graphql(query)(SongList);
+export default graphql(songsQuery)(SongList);

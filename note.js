@@ -236,8 +236,11 @@ function Component(props) {
   return <div>{props.data.mutate({
     variables : {
       title : 'SomeTitle'
-    }
-  }) }</div>;
+    },
+    refetchQueries: [{query: someQuery, variables:{}}], 
+  }) .then(()=>{// execute after mutation success })
+     .catch(()=>{// execute after mutation failed})
+}</div>;
 }
 
 // func

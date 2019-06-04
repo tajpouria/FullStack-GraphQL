@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { gql } from 'apollo-boost';
 import { graphql } from 'react-apollo';
 import PropTypes from 'prop-types';
+
+import { songsQuery, addSongQuery } from '../queries';
 
 function CreateSong({ mutate, history }) {
   const [title, setTitle] = useState('');
@@ -13,6 +14,7 @@ function CreateSong({ mutate, history }) {
       variables: {
         title,
       },
+      refetchQueries: [{ query: songsQuery }],
     }).then(() => history.push('/'));
   }
 
@@ -30,17 +32,9 @@ function CreateSong({ mutate, history }) {
   );
 }
 
-const mutation = gql`
-  mutation AddSong($title: String!) {
-    addSong(title: $title) {
-      title
-    }
-  }
-`;
-
 CreateSong.propTypes = {
   mutate: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
 };
 
-export default graphql(mutation)(CreateSong);
+export default graphql(addSongQuery)(CreateSong);
