@@ -350,3 +350,5 @@
 {"level":"info","message":"Successfully connected to mongodb://localhost/lyrical","timestamp":"2019-06-04T10:13:54.360Z"}
 {"level":"info","message":"Listening on port 4000","timestamp":"2019-06-04T10:16:43.012Z"}
 {"level":"info","message":"Successfully connected to mongodb://localhost/lyrical","timestamp":"2019-06-04T10:16:43.027Z"}
+{"level":"info","message":"Listening on port 4000","timestamp":"2019-06-04T15:09:24.179Z"}
+{"level":"info","message":"Successfully connected to mongodb://localhost/lyrical","timestamp":"2019-06-04T15:09:24.227Z"}

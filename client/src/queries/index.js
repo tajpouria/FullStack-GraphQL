@@ -25,4 +25,23 @@ const deleteSongQuery = gql`
   }
 `;
 
-export { songsQuery, addSongQuery, deleteSongQuery };
+const findSongByIdQuery = gql`
+  query FindSongById($id: ID!) {
+    song(id: $id) {
+      id
+      title
+    }
+  }
+`;
+
+const addLyricToSongQuery = gql`
+  mutation AddLyricToSong($songId: ID!, $content: String!) {
+    addLyricToSong(songId: $songId, content: $content) {
+      id
+    }
+  }
+`;
+
+export {
+  songsQuery, addSongQuery, deleteSongQuery, findSongByIdQuery, addLyricToSongQuery,
+};

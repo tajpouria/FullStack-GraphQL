@@ -26,7 +26,7 @@ module.exports = new GraphQLObjectType({
       },
     },
 
-    lyric: {
+    songLyrics: {
       type: LyricType,
       args: { id: { type: new GraphQLNonNull(GraphQLID) } },
       resolve(parentValue, { id }) {

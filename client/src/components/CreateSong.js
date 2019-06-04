@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { graphql } from 'react-apollo';
 import PropTypes from 'prop-types';
+import { NavLink } from 'react-router-dom';
 
 import { songsQuery, addSongQuery } from '../queries';
 
@@ -20,7 +21,7 @@ function CreateSong({ mutate, history }) {
 
   return (
     <div className="container">
-      <a href="/">Back</a>
+      <NavLink to="/">Back</NavLink>
       <h4>Create New Song</h4>
       <form onSubmit={() => handleFormSubmit(event)}>
         <label htmlFor="title">

@@ -15,7 +15,7 @@ function SongList({ data }) {
 
   const renderSongs = () => songs.map(({ id, title }) => (
     <li className="collection-item" key={id}>
-      {title}
+      <NavLink to={`/songs/${id}`}>{title}</NavLink>
       <DeleteButton id={id} />
     </li>
   ));

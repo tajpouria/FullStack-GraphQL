@@ -237,8 +237,8 @@ function Component(props) {
     variables : {
       title : 'SomeTitle'
     },
-    refetchQueries: [{query: someQuery, variables:{}}], 
-  }) .then(()=>{// execute after mutation success })
+    refetchQueries: [{query: someQuery, variables:{}}], // Queries should fetch after mutation 
+  }) .then(()=>{props.data.refetch()// execute after mutation success })
      .catch(()=>{// execute after mutation failed})
 }</div>;
 }
@@ -257,3 +257,8 @@ const mutation = gql`
 // }`;
 
 export default graphql(mutation)(Component )
+
+// 5. graphql query options
+
+export default graphql(query,
+  { options: (props) => ({variables: {id: props.params.id}}) })(Component)
