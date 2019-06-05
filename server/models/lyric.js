@@ -10,7 +10,7 @@ const lyricSchema = new mongoose.Schema({
   content: { type: String },
 });
 
-lyricSchema.statics.likes = function (id) {
+lyricSchema.statics.like = function (id) {
   return this.findById(id)
     .then((lyric) => {
       lyric.likes += 1;

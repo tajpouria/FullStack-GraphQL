@@ -175,6 +175,10 @@ module.exports = new GraphQLSchema({ mutation: Mutation });
 // > yarn add prop-types
 // import PropTypes from 'prop-types';
 
+Component.defaultProps ={
+  aString = 'string'
+}
+
 Component.propTypes = {
   aString: PropTypes.string.isRequired,
   aNumber: PropTypes.number.isRequired,

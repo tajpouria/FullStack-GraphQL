@@ -34,9 +34,7 @@ module.exports = new GraphQLObjectType({
       type: LyricType,
       args: { id: { type: new GraphQLNonNull(GraphQLID) } },
       resolve(parenValue, { id }) {
-        Lyric.like(id)
-          .then(lyric => lyric)
-          .catch(({ message }) => new Error(message));
+        return Lyric.like(id);
       },
     },
 
