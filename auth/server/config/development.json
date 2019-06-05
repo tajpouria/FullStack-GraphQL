@@ -1,0 +1,8 @@
+{
+  "name": "graphql_auth_webApp-dev",
+  "database": {
+    "mongodb": {
+      "uri": "mongodb://localhost/graphql-auth"
+    }
+  }
+}
