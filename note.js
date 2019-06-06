@@ -287,15 +287,13 @@ export default graphql(query,
 // 2. mongooseSchema pre and eslint prettier !!
 
 userSchema.pre('save', function (next) {
-  const user = this;
   return bcrypt.genSalt(10, (saltErr, salt) => {
     if (saltErr) return next(saltErr);
-    return bcrypt.hash(user.password, salt, (hashErr, encrypted) => {
+    return bcrypt.hash(this.password, salt, (hashErr, encrypted) => {
       if (hashErr) return next(hashErr);
 
-      user.password = encrypted;
+      this.password = encrypted;
       return next();
     });
   });
-});
-
+})

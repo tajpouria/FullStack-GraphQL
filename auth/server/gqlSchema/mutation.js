@@ -20,5 +20,13 @@ module.exports = new GraphQLObjectType({
           .catch(err => new Error(err));
       },
     },
+
+    login: {
+      type: userType,
+      args: {
+        email: { type: new GraphQLNonNull(GraphQLString) },
+        password: { type: new GraphQLNonNull(GraphQLString) },
+      },
+    },
   },
 });
