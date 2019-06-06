@@ -244,7 +244,7 @@ function Component(props) {
     refetchQueries: [{query: someQuery, variables:{}}], // Queries should fetch after mutation 
   }) .then(()=>{props.data.refetch()// execute after mutation success })
      .catch(()=>{// execute after mutation failed})
-}</div>;
+}})</div>;
 }
 
 // func
@@ -266,3 +266,22 @@ export default graphql(mutation)(Component )
 
 export default graphql(query,
   { options: (props) => ({variables: {id: props.params.id}}) })(Component)
+
+  
+// ## Section Two (FullStack GraphQL)
+  
+// 1. req props at GraphQL resolve
+  
+  const mutation = new GraphQLObjectType({
+    name: 'Mutation',
+    fields:()=>({
+      signUp:{
+        type: userType,
+        args: {email:{type: GraphQLString}},
+        resolve(parentValue, args, req){} // ***req coming from express 
+      }
+    })
+  })
+  </div>
+
+
