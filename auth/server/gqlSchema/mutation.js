@@ -14,10 +14,10 @@ module.exports = new GraphQLObjectType({
         password: { type: new GraphQLNonNull(GraphQLString) },
       },
       resolve(parentValue, { email, password }) {
-        new User({ email, password })
+        return new User({ email, password })
           .save()
           .then(user => user)
-          .catch(({ message }) => new Error(message));
+          .catch(err => new Error(err));
       },
     },
   },

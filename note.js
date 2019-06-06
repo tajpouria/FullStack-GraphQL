@@ -278,10 +278,24 @@ export default graphql(query,
       signUp:{
         type: userType,
         args: {email:{type: GraphQLString}},
-        resolve(parentValue, args, req){} // ***req coming from express 
+        resolve(parentValue, args, req){return} // ***req coming from express 
       }
     })
   })
   </div>
 
+// 2. mongooseSchema pre and eslint prettier !!
+
+userSchema.pre('save', function (next) {
+  const user = this;
+  return bcrypt.genSalt(10, (saltErr, salt) => {
+    if (saltErr) return next(saltErr);
+    return bcrypt.hash(user.password, salt, (hashErr, encrypted) => {
+      if (hashErr) return next(hashErr);
+
+      user.password = encrypted;
+      return next();
+    });
+  });
+});
 

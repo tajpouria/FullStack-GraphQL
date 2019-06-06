@@ -27,14 +27,14 @@ app.use(
   }),
 );
 // error handling
-process.on('uncaughtException', (err) => {
-  process.exit(1);
-  winston.error(err.message, err);
-});
-process.on('unhandledRejection', (err) => {
-  process.exit(1);
-  winston.error(err.message, err);
-});
+// process.on('uncaughtException', (err) => {
+//   process.exit(1);
+//   winston.error(err.message, err);
+// });
+// process.on('unhandledRejection', (err) => {
+//   process.exit(1);
+//   winston.error(err.message, err);
+// });
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => winston.info(`Listening on port ${port}...`));
