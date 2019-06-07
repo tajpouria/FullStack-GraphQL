@@ -14,7 +14,8 @@ const app = express();
 
 winston.add(winston.transports.File, { filename: 'logfile.log' });
 // DB setup
-const db = config.get('database.mongodb.uri');
+// const db = config.get('database.mongodb.uri');
+const db = 'mongodb://localhost/graphql-auth';
 mongoose.connect(db, { useNewUrlParser: true }, (err) => {
   if (err) throw new Error(err.message);
 

@@ -1,3 +1,4 @@
+const axios = require('axios');
 const bcrypt = require('bcrypt');
 const LocalStrategy = require('passport-local').Strategy;
 
@@ -9,7 +10,7 @@ function login(passport) {
       User.findOne({ email })
         .then((user) => {
           if (!user) {
-            return done(null, false, {
+            return done(true, false, {
               message: 'The email is not registered.',
             });
           }
@@ -19,7 +20,7 @@ function login(passport) {
 
             if (isMatch) return done(null, user);
 
-            return done(null, false, { massage: 'Password incorrect.' });
+            return done(true, false, { massage: 'Password incorrect.' });
           });
         })
         .catch(err => new Error(err));
@@ -34,7 +35,7 @@ function login(passport) {
   );
 }
 
-function loginPromise(email, passport, req) {
+function loginPromise(email, password) {
   /* return id and email if email and password is valid
   use passport for validation
   so passport must just return is valid or not??
@@ -47,6 +48,17 @@ function loginPromise(email, passport, req) {
   solution 2.
   TODO: take care of later
   */
+  return axios({
+    url: 'http://localhost:4000/users',
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+    data: {
+      email,
+      password,
+    },
+  })
+    .then(res => res.data)
+    .catch(err => new Error(err));
 }
 
 module.exports = { login, loginPromise };
