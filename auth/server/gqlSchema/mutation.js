@@ -27,6 +27,7 @@ module.exports = new GraphQLObjectType({
         email: { type: new GraphQLNonNull(GraphQLString) },
         password: { type: new GraphQLNonNull(GraphQLString) },
       },
+      resolve(parentValue, { email, password }, req) {},
     },
   },
 });

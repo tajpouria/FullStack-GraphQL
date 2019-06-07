@@ -296,4 +296,5 @@ userSchema.pre('save', function (next) {
       return next();
     });
   });
-})
+});
+

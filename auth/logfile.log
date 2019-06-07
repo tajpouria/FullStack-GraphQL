@@ -1,0 +1,4 @@
+{"level":"info","message":"Listening on port 4000...","timestamp":"2019-06-07T09:32:12.103Z"}
+{"level":"info","message":"Successfully connected to mongodb://localhost/graphql-auth","timestamp":"2019-06-07T09:32:12.128Z"}
+{"level":"info","message":"Listening on port 4000...","timestamp":"2019-06-07T09:33:53.534Z"}
+{"level":"info","message":"Successfully connected to mongodb://localhost/graphql-auth","timestamp":"2019-06-07T09:33:53.559Z"}
