@@ -10,7 +10,7 @@ function login(passport) {
       User.findOne({ email })
         .then((user) => {
           if (!user) {
-            return done(true, false, {
+            return done(null, false, {
               message: 'The email is not registered.',
             });
           }
@@ -18,9 +18,9 @@ function login(passport) {
           bcrypt.compare(password, user.password, (err, isMatch) => {
             if (err) throw new Error(err);
 
-            if (isMatch) return done(null, user);
+            if (isMatch) return done(undefined, user);
 
-            return done(true, false, { massage: 'Password incorrect.' });
+            return done(false, false, { message: 'Password incorrect.' });
           });
         })
         .catch(err => new Error(err));
