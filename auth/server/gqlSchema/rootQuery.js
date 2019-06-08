@@ -1,4 +1,4 @@
-const { GraphQLObjectType, GraphQLNonNull, GraphQLID } = require('graphql');
+const { GraphQLObjectType, GraphQLList } = require('graphql');
 
 const UserType = require('./userType');
 
@@ -8,7 +8,7 @@ module.exports = new GraphQLObjectType({
   name: 'RootQueryType',
   fields: {
     users: {
-      type: UserType,
+      type: new GraphQLList(UserType),
       resolve() {
         return User.find({})
           .then(users => users)
@@ -17,11 +17,9 @@ module.exports = new GraphQLObjectType({
     },
     user: {
       type: UserType,
-      args: { id: { type: GraphQLNonNull(GraphQLID) } },
-      resolve(parentValue, { id }) {
-        return User.findById(id)
-          .then(user => user)
-          .catch(({ message }) => new Error(message));
+      resolve(parentValue, args, req) {
+        // TARGET: return user from req
+        // when user add to req?
       },
     },
   },

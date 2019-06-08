@@ -1,3 +1,4 @@
+const cors = require('cors');
 const express = require('express');
 const winston = require('winston');
 const bodyParser = require('body-parser');
@@ -23,6 +24,7 @@ mongoose.connect(db, { useNewUrlParser: true }, (err) => {
 });
 // middlewares
 app.use(bodyParser.json());
+app.use(cors());
 app.use(
   '/graphql',
   expressGraphQL({

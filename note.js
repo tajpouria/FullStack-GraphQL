@@ -199,8 +199,14 @@ Component.propTypes = {
 // import ApolloClient from 'apollo-boost'
 // import {  ApolloProvider } from 'react-apollo'
 
+const cache = new InMemoryCache();
+const link = new HttpLink({
+  uri: 'http://localhost:3000/',
+});
+
 const client = new ApolloClient({
-  uri: 'http://localhost:4000/graphql',
+  cache,
+  link,
 });
 
 // *** ./server/index.js

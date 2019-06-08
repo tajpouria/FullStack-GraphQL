@@ -29,8 +29,14 @@ module.exports = new GraphQLObjectType({
         email: { type: new GraphQLNonNull(GraphQLString) },
         password: { type: new GraphQLNonNull(GraphQLString) },
       },
-      resolve(parentValue, { email, password }) {
-        return loginPromise(email, password);
+      resolve(parentValue, { email, password }, req) {
+        return loginPromise(email, password, req);
+      },
+    },
+    logout: {
+      type: userType,
+      resolve(parentValue, args, req) {
+        req.logout();
       },
     },
   },
