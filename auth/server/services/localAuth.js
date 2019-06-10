@@ -5,39 +5,36 @@ const passport = require('passport');
 
 const User = require('../models/User');
 
-function login() {
-  passport.use(
-    new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
-      User.findOne({ email })
-        .then((user) => {
-          console.log(user);
-          if (!user) {
-            return done(null, false, {
-              message: 'The email is not registered.',
-            });
-          }
-
-          return bcrypt.compare(password, user.password, (err, isMatch) => {
-            if (err) throw new Error(err);
-
-            if (isMatch) return done(null, user);
-
-            return done(null, false, { message: 'Password incorrect.' });
+passport.use(
+  new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
+    User.findOne({ email })
+      .then((user) => {
+        if (!user) {
+          return done(null, false, {
+            message: 'The email is not registered.',
           });
-        })
-        .catch(err => new Error(err));
+        }
 
-      passport.serializeUser((user, done) => done(null, user.id));
-      passport.deserializeUser((id, done) => {
-        User.findById(id, (err, user) => {
-          done(err, user);
+        return bcrypt.compare(password, user.password, (err, isMatch) => {
+          if (err) throw new Error(err);
+
+          if (isMatch) return done(null, user);
+
+          return done(null, false, { message: 'Password incorrect.' });
         });
-      });
-    }),
-  );
-}
+      })
+      .catch(err => new Error(err));
 
-function loginPromise1(email, password, req) {
+    passport.serializeUser((user, done) => done(null, user.id));
+    passport.deserializeUser((id, done) => {
+      User.findById(id, (err, user) => {
+        done(err, user);
+      });
+    });
+  }),
+);
+
+async function loginPromise(email, password, req) {
   /* return id and email if email and password is valid
   use passport for validation
   so passport must just return is valid or not??
@@ -51,29 +48,40 @@ function loginPromise1(email, password, req) {
   combine passport and graphql
   TODO: take care of it later
   */
-  return axios({
-    url: 'http://localhost:4000/users',
-    method: 'post',
-    headers: { 'Content-Type': 'application/json' },
-    data: {
-      email,
-      password,
-    },
-  })
-    .then(res => res.data)
-    .catch(err => new Error(err));
-}
 
-function loginPromise({ email, password, req }) {
+  // req.login({ email, password });
+  // const { data } = await axios({
+  //   url: 'http://localhost:4000/users',
+  //   method: 'post',
+  //   headers: { 'Content-Type': 'application/json' },
+  //   data: {
+  //     email,
+  //     password,
+  //   },
+  // });
+
   return new Promise((resolve, reject) => {
     passport.authenticate('local', (err, user) => {
       if (!user) {
-        reject('Invalid credentials.');
+        reject(new Error('Invalid credentials.'));
       }
-
-      req.login(user, () => resolve(user));
+      resolve(user);
     })({ body: { email, password } });
   });
+
+  // return new Promise((resolve, reject) => resolve(
+  //   axios({
+  //     url: 'http://localhost:4000/users',
+  //     method: 'post',
+  //     headers: { 'Content-Type': 'application/json' },
+  //     data: {
+  //       email,
+  //       password,
+  //     },
+  //   }),
+  // ))
+  //   .then(res => res.data)
+  //   .catch(err => new Error(err));
 }
 
-module.exports = { login, loginPromise };
+module.exports = { loginPromise };

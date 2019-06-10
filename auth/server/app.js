@@ -1,7 +1,6 @@
 const cors = require('cors');
 const express = require('express');
 const winston = require('winston');
-const bodyParser = require('body-parser');
 const expressGraphQL = require('express-graphql');
 const mongoose = require('mongoose');
 const config = require('config');
@@ -23,16 +22,6 @@ mongoose.connect(db, { useNewUrlParser: true }, (err) => {
   winston.info(`Successfully connected to ${db}`);
 });
 // middlewares
-app.use(bodyParser.json());
-app.use(cors());
-app.use(
-  '/graphql',
-  expressGraphQL({
-    schema,
-    graphiql: true,
-  }),
-);
-
 app.use(
   session({
     resave: true,
@@ -40,22 +29,29 @@ app.use(
     secret: 'secret',
   }),
 );
-const { login } = require('./services/localAuth');
 
-login(passport);
+// const { login } = require('./services/localAuth');
+
+// login(passport);
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use(cors());
+app.use(
+  '/graphql',
+  expressGraphQL(req => ({ schema, context: { user: req.user }, graphiql: true })),
+);
 // routes
 app.use('/users', users);
 // error handling
-process.on('uncaughtException', (err) => {
-  process.exit(1);
-  winston.error(err.message, err);
-});
-process.on('unhandledRejection', (err) => {
-  process.exit(1);
-  winston.error(err.message, err);
-});
+// process.on('uncaughtException', (err) => {
+//   process.exit(1);
+//   winston.error(err.message, err);
+// });
+// process.on('unhandledRejection', (err) => {
+//   process.exit(1);
+//   winston.error(err.message, err);
+// });
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => winston.info(`Listening on port ${port}...`));
