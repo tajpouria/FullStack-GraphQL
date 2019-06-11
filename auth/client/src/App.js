@@ -3,7 +3,6 @@ import { ApolloClient, HttpLink, InMemoryCache } from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-import Header from './components/Header';
 import Form from './components/Form';
 
 const client = new ApolloClient({
@@ -15,10 +14,8 @@ export default function App() {
   return (
     <ApolloProvider client={client}>
       <Router>
-        <Header />
-        <Form screen="signup" />
         <Switch>
-          <Route />
+          <Route exact path="/" component={Form} />
         </Switch>
       </Router>
     </ApolloProvider>

@@ -1605,3 +1605,5 @@
 {"level":"info","message":"Successfully connected to mongodb://localhost/graphql-auth","timestamp":"2019-06-11T11:21:43.422Z"}
 {"level":"info","message":"Listening on port 4000...","timestamp":"2019-06-11T11:21:52.510Z"}
 {"level":"info","message":"Successfully connected to mongodb://localhost/graphql-auth","timestamp":"2019-06-11T11:21:52.527Z"}
+{"level":"info","message":"Listening on port 4000...","timestamp":"2019-06-11T20:12:24.262Z"}
+{"level":"info","message":"Successfully connected to mongodb://localhost/graphql-auth","timestamp":"2019-06-11T20:12:24.275Z"}
