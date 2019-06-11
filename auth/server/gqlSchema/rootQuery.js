@@ -18,19 +18,8 @@ module.exports = new GraphQLObjectType({
     user: {
       type: UserType,
       resolve(parentValue, args, req) {
-        console.log(req.user);
-        // TARGET: return user from req
-        // when user add to req?
+        return req.user;
       },
     },
   },
 });
-
-/*
-GOAL: when user query assigned we should get back
- user from req if user is logged in
-
-1. when login mutation assigned it should add user to req and keep that req
-
-
-*/

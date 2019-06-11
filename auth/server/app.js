@@ -8,19 +8,20 @@ const session = require('express-session');
 const passport = require('passport');
 
 const schema = require('./gqlSchema/schema');
-const users = require('./routes/users');
 
 const app = express();
 
 winston.add(winston.transports.File, { filename: 'logfile.log' });
+
 // DB setup
-// const db = config.get('database.mongodb.uri');
-const db = 'mongodb://localhost/graphql-auth';
+const db = config.get('database.mongodb.uri');
+mongoose.Promise = global.Promise;
 mongoose.connect(db, { useNewUrlParser: true }, (err) => {
   if (err) throw new Error(err.message);
 
   winston.info(`Successfully connected to ${db}`);
 });
+
 // middlewares
 app.use(
   session({
@@ -30,28 +31,11 @@ app.use(
   }),
 );
 
-// const { login } = require('./services/localAuth');
-
-// login(passport);
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(cors());
-app.use(
-  '/graphql',
-  expressGraphQL(req => ({ schema, context: { user: req.user }, graphiql: true })),
-);
-// routes
-app.use('/users', users);
-// error handling
-// process.on('uncaughtException', (err) => {
-//   process.exit(1);
-//   winston.error(err.message, err);
-// });
-// process.on('unhandledRejection', (err) => {
-//   process.exit(1);
-//   winston.error(err.message, err);
-// });
+app.use('/graphql', expressGraphQL({ schema, graphiql: true }));
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => winston.info(`Listening on port ${port}...`));

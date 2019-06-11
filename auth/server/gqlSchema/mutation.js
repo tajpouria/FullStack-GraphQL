@@ -2,9 +2,7 @@ const { GraphQLObjectType, GraphQLNonNull, GraphQLString } = require('graphql');
 
 const userType = require('./userType');
 
-const User = require('../models/User');
-
-const { loginPromise } = require('../services/localAuth');
+const { signup, login } = require('../services/localAuth');
 
 module.exports = new GraphQLObjectType({
   name: 'Mutation',
@@ -15,11 +13,8 @@ module.exports = new GraphQLObjectType({
         email: { type: new GraphQLNonNull(GraphQLString) },
         password: { type: new GraphQLNonNull(GraphQLString) },
       },
-      resolve(parentValue, { email, password }) {
-        return new User({ email, password })
-          .save()
-          .then(user => user)
-          .catch(err => new Error(err));
+      resolve(parentValue, { email, password }, req) {
+        return signup({ email, password, req });
       },
     },
 
@@ -30,13 +25,16 @@ module.exports = new GraphQLObjectType({
         password: { type: new GraphQLNonNull(GraphQLString) },
       },
       resolve(parentValue, { email, password }, req) {
-        return loginPromise(email, password, req);
+        return login({ email, password, req });
       },
     },
+
     logout: {
       type: userType,
       resolve(parentValue, args, req) {
+        const { user } = req;
         req.logout();
+        return user;
       },
     },
   },
