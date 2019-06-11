@@ -3,16 +3,12 @@ import { ApolloClient, HttpLink, InMemoryCache } from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-import Header from '../components/Header';
-
-const cache = new InMemoryCache();
-const link = new HttpLink({
-  uri: 'http://localhost:3000/',
-});
+import Header from './components/Header';
+import Form from './components/Form';
 
 const client = new ApolloClient({
-  cache,
-  link,
+  link: new HttpLink({ uri: 'http://localhost:4000/graphql', credentials: 'same-origin' }),
+  cache: new InMemoryCache(),
 });
 
 export default function App() {
@@ -20,6 +16,7 @@ export default function App() {
     <ApolloProvider client={client}>
       <Router>
         <Header />
+        <Form screen="signup" />
         <Switch>
           <Route />
         </Switch>

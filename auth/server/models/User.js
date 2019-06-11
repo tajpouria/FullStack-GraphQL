@@ -17,8 +17,8 @@ userSchema.pre('save', function (next) {
   });
 });
 
-userSchema.methods.comparePassword = function comparePassword(candidatePassword, cb) {
-  bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
+userSchema.methods.comparePassword = function comparePassword(password, cb) {
+  bcrypt.compare(password, this.password, (err, isMatch) => {
     cb(err, isMatch);
   });
 };
